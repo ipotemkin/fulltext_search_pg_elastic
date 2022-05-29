@@ -4,7 +4,7 @@ from fastapi import APIRouter, status, Depends, Path, Query
 
 from src.api.protocols import PostServiceProtocol
 from src.post.models import PostResponseV1, PostRequestV1, PostUpdateRequestV1, PostListResponseV1
-from src.search.service import add_to_index
+from src.search.service import add_to_index, query_index
 
 router = APIRouter(
     tags=['Posts']
@@ -24,6 +24,8 @@ async def get_all_posts(
         offset: int = Query(default=0, ge=0),
 ):
     if text:
+        qi = query_index(index="posts", query=text, page=1, per_page=10)
+        print(qi)
         return post_service.search({"text": text})
 
     return post_service.get_all(limit=limit, offset=offset)
