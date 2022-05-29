@@ -3,3 +3,4 @@
 venv
 .idea
 postgres-data
+__pycache__
