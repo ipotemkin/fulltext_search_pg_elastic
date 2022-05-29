@@ -3,6 +3,8 @@ from fastapi.responses import JSONResponse
 # from fastapi_utils.tasks import repeat_every
 
 # from src.github_api import get_github_repos_by_login, update_stats
+from sqlalchemy import event
+from sqlalchemy.orm import sessionmaker
 
 import src.api.protocols
 from src.api import protocols, post
@@ -17,6 +19,13 @@ from src.errors import (
 # from src.post.service import StatService
 # from src.user.service import UserService
 from src.post.service import PostService
+
+# Session = sessionmaker(bind=get_engine())
+#
+#
+# @event.listens_for(Session, "before_commit")
+# def my_before_commit(session):
+#     print("before commit!")
 
 
 def get_application() -> FastAPI:

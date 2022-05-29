@@ -1,6 +1,8 @@
 import sqlalchemy as sa
 from sqlalchemy import func
 
+from src.dependencies import get_engine
+
 metadata = sa.MetaData()
 
 posts = sa.Table(
@@ -33,3 +35,18 @@ posts = sa.Table(
 #     sa.Column('forks', sa.Integer, nullable=False),
 #     sa.Column('watchers', sa.Integer, nullable=False)
 # )
+
+from sqlalchemy import event
+from sqlalchemy.orm import sessionmaker
+
+
+# def my_before_commit(session):
+#     print("before commit!")
+#
+#
+# Session = sessionmaker(bind=get_engine())
+#
+# event.listen(Session, "before_commit", my_before_commit)
+#
+#
+# my_before_commit(Session)

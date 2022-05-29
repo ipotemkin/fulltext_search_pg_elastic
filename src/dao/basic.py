@@ -54,11 +54,12 @@ class BasicDAO:
         return self.schema(**item_data)
 
     # TODO return a new item endpoint
-    def create(self, item: BaseModel) -> None:
-        # breakpoint()
+    def create(self, item: BaseModel) -> int:
         query = insert(self.model).values(**item.dict(exclude_unset=True))
-        # query = insert(self.model).values(**item.dict(exclude_none=True))
-        self._execute(query, commit=True)
+        result = self._execute(query, commit=True)
+        # breakpoint()
+        print(result)
+        return result.context.inserted_primary_key_rows[0][0]
 
     def update(self, pk: int, item: BaseModel) -> BaseModel:
         if not item:
