@@ -32,10 +32,19 @@ async def fulltext_search(
     if text:
         # qi = query_index(index="posts", query=text, page=1, per_page=10)
         # print(qi)
-        return sorted(
-            post_service.sm_search(query=text, index="posts", per_page=20),
-            key=lambda x: getattr(x, "created_date")
+
+        # return sorted(
+        #     post_service.sm_search(query=text, index="posts", per_page=20),
+        #     key=lambda x: getattr(x, "created_date")
+        # )
+
+        return post_service.sm_search(
+            query=text,
+            index="posts",
+            per_page=20,
+            ordering="created_date"
         )
+
     return []
 
     # return qi

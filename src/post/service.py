@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from sqlalchemy.future import Engine
+from sqlalchemy.future import Engine, select
+from sqlalchemy import select
 
 from src.dao.basic import BasicDAO
 from src.database.tables import posts
@@ -34,7 +35,13 @@ class PostService(BasicDAO):
     def delete(self, pk: int) -> None:
         super().delete(pk)
 
-    def sm_search(self, query: str, index: str, page=1, per_page=10):
+    def sm_search(self, query: str, index: str, page=1, per_page=10, ordering=None):
         ids, _ = query_index(index=index, query=query, page=page, per_page=per_page)
-        # print(ids)
-        return [self.get_one(item) for item in ids]
+        # return [self.get_one(item) for item in ids]
+        sql = select(self.model).where(self.model.c[self.pk_name].in_(ids)).order_by(ordering)
+        items_data = self._execute(sql)
+        # print(self.model.name)
+        return [self.schema(**item_data) for item_data in items_data]
+
+
+
