@@ -16,3 +16,7 @@ class NoContentError(Exception):
 
 class DatabaseError(Exception):
     pass
+
+
+class ElasticError(Exception):
+    pass

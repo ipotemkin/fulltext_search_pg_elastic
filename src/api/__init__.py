@@ -14,7 +14,7 @@ from src.errors import (
     NoContentError,
     DatabaseError,
     BadRequestError,
-    ValidationError
+    ValidationError, ElasticError
 )
 # from src.post.service import StatService
 # from src.user.service import UserService
@@ -99,3 +99,8 @@ def bad_request_error(request: Request, exc: BadRequestError):
 @app.exception_handler(ValidationError)
 def validation_error(request: Request, exc: ValidationError):
     return JSONResponse(status_code=400, content={"message": "Validation Error"})
+
+
+@app.exception_handler(ElasticError)
+def elastic_error(request: Request, exc: ElasticError):
+    return JSONResponse(status_code=400, content={"message": "Elastic Error"})
