@@ -8,7 +8,7 @@ from ..search.search_mixin import SearchableMixin
 
 
 # class PostService(BasicDAO, SearchableMixin):
-from src.search.service import add_to_index
+from src.search.service import add_to_index, query_index
 
 
 class PostService(BasicDAO):
@@ -33,3 +33,8 @@ class PostService(BasicDAO):
 
     def delete(self, pk: int) -> None:
         super().delete(pk)
+
+    def sm_search(self, query: str, index: str, page=1, per_page=10):
+        ids, _ = query_index(index=index, query=query, page=page, per_page=per_page)
+        # print(ids)
+        return [self.get_one(item) for item in ids]

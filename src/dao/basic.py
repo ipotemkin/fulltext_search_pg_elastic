@@ -104,6 +104,7 @@ class BasicDAO:
 
     # to filter with a dictionary; example {"column name": "searching string"} - a strict search
     def filter(self, filter_d: dict) -> List[BaseModel]:
+        print(filter_d)
         query = select(self.model).filter_by(**filter_d)
         res = self._execute(query)
         return [self.schema_list(**item) for item in res]

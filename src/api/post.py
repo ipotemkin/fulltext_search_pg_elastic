@@ -26,12 +26,19 @@ async def fulltext_search(
         text: Optional[str] = Query(
             default=None, description="Введите строку для поиска"
         ),
+        post_service: PostServiceProtocol = Depends(),
 ):
-    qi = {}
+    # qi = {}
     if text:
-        qi = query_index(index="posts", query=text, page=1, per_page=10)
-        print(qi)
-    return qi
+        # qi = query_index(index="posts", query=text, page=1, per_page=10)
+        # print(qi)
+        return sorted(
+            post_service.sm_search(query=text, index="posts", per_page=20),
+            key=lambda x: getattr(x, "created_date")
+        )
+    return []
+
+    # return qi
 
 
 @router.get(
