@@ -9,7 +9,6 @@ from src.post.models import (
     PostUpdateRequestV1,
     PostListResponseV1
 )
-from src.search.service import add_to_index, query_index
 
 router = APIRouter(
     tags=['Posts']
@@ -18,7 +17,7 @@ router = APIRouter(
 
 @router.get(
     path='/v1/posts/search',
-    # response_model=List[PostListResponseV1],
+    response_model=List[PostResponseV1],
     summary='Полнотекстовый поиск',
     description='Реализует полнотекстовый поиск.'
 )
@@ -28,26 +27,10 @@ async def fulltext_search(
         ),
         post_service: PostServiceProtocol = Depends(),
 ):
-    # qi = {}
-    if text:
-        # qi = query_index(index="posts", query=text, page=1, per_page=10)
-        # print(qi)
+    if not text:
+        return []
 
-        # return sorted(
-        #     post_service.sm_search(query=text, index="posts", per_page=20),
-        #     key=lambda x: getattr(x, "created_date")
-        # )
-
-        return post_service.sm_search(
-            query=text,
-            index="posts",
-            per_page=20,
-            ordering="created_date"
-        )
-
-    return []
-
-    # return qi
+    return post_service.sm_search(query=text, per_page=20, ordering="created_date")
 
 
 @router.get(
@@ -81,9 +64,7 @@ async def get_post_by_id(
         id: int = Path(..., ge=1),
         post_service: PostServiceProtocol = Depends()
 ):
-    post = post_service.get_one(id)
-    add_to_index("posts", post)
-    return post
+    return post_service.get_one(id)
 
 
 @router.post(

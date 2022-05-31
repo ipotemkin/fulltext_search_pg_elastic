@@ -41,5 +41,5 @@ class PostServiceProtocol:
     def search(self, filter_d: dict) -> List[PostListResponseV1]:
         raise NotImplementedError
 
-    def get_stats_by_user_id(self, id: int, date_from, date_to) -> PostResponseV1:
+    def sm_search(self, query: str, per_page: int, ordering: str) -> List[PostResponseV1]:
         raise NotImplementedError

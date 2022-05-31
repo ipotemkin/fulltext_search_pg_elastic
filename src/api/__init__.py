@@ -88,7 +88,10 @@ def no_content_error(request: Request, exc: NoContentError):
 
 @app.exception_handler(DatabaseError)
 def database_error(request: Request, exc: DatabaseError):
-    return JSONResponse(status_code=400, content={"message": "Database Error"})
+    return JSONResponse(
+        status_code=400,
+        content={"message": "Database Error", "details": str(exc)}
+    )
 
 
 @app.exception_handler(BadRequestError)

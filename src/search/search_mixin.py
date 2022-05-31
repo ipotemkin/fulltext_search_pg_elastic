@@ -1,3 +1,5 @@
+# TODO delete this module
+
 from src.dependencies import get_engine
 from src.search.service import query_index, add_to_index, remove_from_index
 

@@ -11,10 +11,10 @@ def add_to_index(index, model):
     sm.index(index=index, id=model.id, body=payload)
 
 
-def remove_from_index(index, model):
+def remove_from_index(index: str, id: int):
     if not (sm := get_search_machine()):
         return
-    sm.delete(index=index, doc_type=index, id=model.id)
+    sm.delete(index=index, id=id)
 
 
 def query_index(index, query, page, per_page):
@@ -26,4 +26,4 @@ def query_index(index, query, page, per_page):
         body={'query': {'multi_match': {'query': query, 'fields': ['*']}},
               'from': (page - 1) * per_page, 'size': per_page})
     ids = [int(hit['_id']) for hit in search['hits']['hits']]
-    return ids, search['hits']['total']
+    return ids, search['hits']['total']['value']
