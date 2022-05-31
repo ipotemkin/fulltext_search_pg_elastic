@@ -53,7 +53,6 @@ class BasicDAO:
 
         return self.schema(**item_data)
 
-    # TODO return a new item endpoint
     def create(self, item: BaseModel) -> BaseModel:
         query = (
             insert(self.model)
@@ -61,8 +60,6 @@ class BasicDAO:
             .values(**item.dict(exclude_unset=True))
         )
         result = self._execute(query, commit=True)
-        # breakpoint()
-        print(result)
         # return result.context.inserted_primary_key_rows[0][0]
         return self.schema(**result.fetchone())
 
@@ -87,13 +84,13 @@ class BasicDAO:
         return self.get_one(pk)
 
     # updates records, which meet 'filter_d', creates a record from 'item' if such records don't exist.
-    def update_or_create(self, filter_d: dict, item: BaseModel) -> None:
+    def update_or_create(self, filter_d: dict, item: BaseModel) -> BaseModel:
         data_to_update = self.filter(filter_d)
         if data_to_update:
             for item_to_update in data_to_update:
                 self.update(item_to_update.__dict__[self.pk_name], item)
         else:
-            self.create(item)
+            return self.create(item)
 
     def delete(self, pk: int) -> None:
         query = delete(self.model).where(self.model.c[self.pk_name] == pk)

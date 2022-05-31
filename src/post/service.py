@@ -10,7 +10,7 @@ from .models import PostRequestV1, PostResponseV1, PostListResponseV1
 
 
 from src.search.service import add_to_index, query_index, remove_from_index
-from ..errors import DatabaseError, NoContentError, BadRequestError
+from src.errors import DatabaseError, NoContentError, BadRequestError
 
 
 class PostService(BasicDAO):

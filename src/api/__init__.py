@@ -1,10 +1,5 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-# from fastapi_utils.tasks import repeat_every
-
-# from src.github_api import get_github_repos_by_login, update_stats
-from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
 
 import src.api.protocols
 from src.api import protocols, post
@@ -16,16 +11,7 @@ from src.errors import (
     BadRequestError,
     ValidationError, ElasticError
 )
-# from src.post.service import StatService
-# from src.user.service import UserService
 from src.post.service import PostService
-
-# Session = sessionmaker(bind=get_engine())
-#
-#
-# @event.listens_for(Session, "before_commit")
-# def my_before_commit(session):
-#     print("before commit!")
 
 
 def get_application() -> FastAPI:
@@ -42,14 +28,10 @@ PostgreSQL + ElasticSearch""",
         docs_url="/",  # TODO comments
     )
 
-    # application.include_router(users.router)
     application.include_router(post.router)
 
     engine = get_engine()
 
-    # user_service = UserService(engine)
-    # application.dependency_overrides[protocols.UserServiceProtocol] = lambda: user_service
-    #
     post_service = PostService(engine)
     application.dependency_overrides[protocols.PostServiceProtocol] = lambda: post_service
 
@@ -60,18 +42,8 @@ app = get_application()
 
 
 @app.on_event("startup")
-# @repeat_every(seconds=60 * 60 * 24)  # sets an interval for updating DB
 async def on_startup():
     ...
-
-    # TODO This code should be refactored
-    # engine = get_engine()
-    # stat_service = StatService(engine)
-    # user_service = UserService(engine)
-    # _users = user_service.get_all()
-    # for user in _users:
-    #     repos = await get_github_repos_by_login(user.login)
-    #     update_stats(user.id, repos, stat_service)
 
 
 # exception handlers
