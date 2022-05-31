@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from fastapi import APIRouter, status, Depends, Path, Query
+from fastapi import APIRouter, status, Depends, Path, Query, Response
 
 from src.api.protocols import PostServiceProtocol
 from src.post.models import (
@@ -75,9 +75,11 @@ async def get_post_by_id(
 )
 def add_post(
         post_data: PostRequestV1,
-        post_service: PostServiceProtocol = Depends()
+        response: Response,
+        post_service: PostServiceProtocol = Depends(),
 ):
-    post_service.create(post_data)
+    new_post: PostResponseV1 = post_service.create(post_data)
+    response.headers['url'] = f"/v1/posts/{new_post.id}"
 
 
 @router.delete(

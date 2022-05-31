@@ -29,7 +29,7 @@ class PostServiceProtocol:
     def get_one(self, id: int) -> PostResponseV1:
         raise NotImplementedError
 
-    def create(self, user: PostRequestV1) -> None:
+    def create(self, user: PostRequestV1) -> PostResponseV1:
         raise NotImplementedError
 
     def update(self, id: int, user: PostUpdateRequestV1) -> None:

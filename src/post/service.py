@@ -25,7 +25,7 @@ class PostService(BasicDAO):
         super().__init__(engine, model, schema, schema_list=schema_list)
         self.index = index
 
-    def create(self, item: BaseModel) -> int:
+    def create(self, item: BaseModel) -> BaseModel:
         with self._engine.connect() as conn:
             with conn.begin() as trans:
                 try:
@@ -39,7 +39,7 @@ class PostService(BasicDAO):
                     add_to_index(self.index, new_post)
                     trans.commit()
                     print(new_post.id)  # TODO remove before release
-                    return new_post.id
+                    return new_post
 
                 except Exception as e:
                     trans.rollback()
