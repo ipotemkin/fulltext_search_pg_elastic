@@ -10,35 +10,33 @@ from src.search.service import add_to_index
 from pathlib import Path
 import os
 
-filename = "posts.csv"
+filename = "fixtures/posts.csv"
 
 BASE_DIR = Path(__file__).resolve().parent
 
-# breakpoint()
+# print("in create_data.py")
+# print(BASE_DIR)
 
-print("in create_data.py")
-print(BASE_DIR)
-
-# db = get_engine()
-# metadata.drop_all(db)
-# metadata.create_all(db)
-# conn = db.connect()
+db = get_engine()
+metadata.drop_all(db)
+metadata.create_all(db)
+conn = db.connect()
 
 with open(os.path.join(BASE_DIR, filename), newline='') as f:
     reader = csv.DictReader(f)
     for i, row in enumerate(reader, 1):
         # print(row['text'], row['created_date'], row['rubrics'])
         # print(row)
-        # ins = insert(posts).values(**row)
-        # conn.execute(ins)
-        # post = PostRequestV1(
-        #     id=i,
-        #     text=row["text"]
-        # )
-        # add_to_index("posts", post)
+        ins = insert(posts).values(**row)
+        conn.execute(ins)
+        post = PostRequestV1(
+            id=i,
+            text=row["text"]
+        )
+        add_to_index("posts", post)
         print(f"processed row {i}")
-        if i > 10:
-            break
+        # if i > 10:
+        #     break
 
-# conn.commit()
-# conn.close()
+conn.commit()
+conn.close()

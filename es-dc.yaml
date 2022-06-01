@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+
+  es:
+#    image: elasticsearch:8.2.2
+    image: elasticsearch:7.17.4
+    environment:
+      discovery.type: "single-node"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+#    volumes:
+#      - ./es/config:/usr/share/elasticsearch/config
