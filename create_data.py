@@ -36,8 +36,8 @@ with open(os.path.join(BASE_DIR, filename), newline='') as f:
         add_to_index("posts", post)
         print(f"processed row {i}")
 
-        if i > 10:
-            break
+        # if i > 10:
+        #     break
 
 conn.commit()
 conn.close()
