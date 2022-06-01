@@ -6,7 +6,7 @@ from sqlalchemy import select, delete, insert, update
 
 from src.dao.basic import BasicDAO
 from src.database.tables import posts
-from .models import PostRequestV1, PostResponseV1, PostListResponseV1
+from .models import PostResponseV1, PostListResponseV1
 
 
 from src.search.service import add_to_index, query_index, remove_from_index
