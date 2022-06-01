@@ -5,3 +5,4 @@ venv
 postgres-data
 __pycache__
 es
+es-dc.yaml
